@@ -1,0 +1,95 @@
+# --- Python build artifacts ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.db
+*.sqlite
+.env
+.git
+.gitignore
+Dockerfile
+docker-compose*
+tests/
+notebooks/
+docs/
+.idea/
+.vscode/
+__MACOSX
+
+# --- Virtual environments ---
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# --- System / IDE files ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# --- Git and CI ---
+.git/
+.gitignore
+.gitattributes
+.github/
+.gitlab-ci.yml
+
+# --- Logs and coverage ---
+*.log
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+*.tox/
+.tox/
+.coverage.*
+nosetests.xml
+coverage.xml
+
+# --- Docs and examples ---
+docs/
+examples/
+*.md
+README.md
+
+# --- Docker and compose ---
+docker-compose.yml
+Dockerfile.dev
+.Dockerfile.*
+
+# --- Misc / OS-specific ---
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# --- Local configs ---
+.env.example
+.env.local
+.env.development
+.env.production
+.env.*
+
+# --- Node / frontend (if monorepo) ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- CDK related ---
+cdk.out/
+cdk.context.json
+*.ts
+*.tsx
+*.js.map
+*.test.*

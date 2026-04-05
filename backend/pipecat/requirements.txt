@@ -1,0 +1,17 @@
+# Pipecat AI dependencies
+# Smart Turn v3 dependencies (transformers + torch) are now included via the silero extra
+pipecat-ai[daily,google,cartesia,silero,openai,anthropic]==0.0.104
+# Note: pipecat-flows is included in pipecat-ai, no separate installation needed
+
+# PyTorch CPU-only (required for Smart Turn v3 Whisper feature extractor)
+# Using CPU version to reduce image size (~700MB vs ~2GB for full torch)
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.5.1+cpu
+
+# Core dependencies
+loguru==0.7.3
+websockets==13.1
+
+# AWS SDK for environment integration
+boto3==1.35.89
+botocore==1.35.89

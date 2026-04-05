@@ -1,0 +1,138 @@
+import { QuestTask, QuestQuestion, QuestEntity } from '../../../../../../src/services/quests/types';
+
+export const activityReadinessTask: Omit<QuestTask, 'pk' | 'sk'> = {
+  entity: QuestEntity.TASK,
+  taskId: 'activity_readiness',
+  title: 'Launch Your Active Lifestyle',
+  description: 'Discover exactly where you are on your fitness journey from not ready to actively thriving. Get personalized strategies to move forward, whether you are just considering exercise or maintaining an established routine.',
+  illustration: 'rocket',
+  framework: 'Transtheoretical Model Stages (Prochaska)',
+  order: 4,
+  scoringLogic: {
+    scale: 'LIKERT_1_7',
+    reverseQuestions: ['ar_q4'],
+    ranges: {
+      precontemplation: [1, 2.5],
+      contemplation: [2.51, 4],
+      preparation: [4.01, 5.5],
+      action_maintenance: [5.51, 7],
+    },
+  },
+  interpretations: [
+    {
+      category: 'precontemplation',
+      range: [1, 2.5],
+      label: 'Pre-Journey Stage',
+      description: 'You have not started your fitness journey yet—and that is perfectly okay. When you are ready, even the smallest step forward will make a difference.',
+      traits: [
+        'At the beginning of the path',
+        'Open to learning about benefits',
+        'No pressure to start immediately',
+        'Future potential awaiting',
+      ],
+      recommendations: [
+        'Reflect on how physical activity could improve your daily life',
+        'Learn about health benefits relevant to your personal goals',
+        'Start with very small changes like walking 5 minutes daily',
+        'Identify and address barriers that prevent consideration',
+      ],
+    },
+    {
+      category: 'contemplation',
+      range: [2.51, 4],
+      label: 'Curiosity Awakening',
+      description: 'You are curious about exercise and starting to imagine yourself as an active person. This is an exciting stage—your mind is preparing for action.',
+      traits: [
+        'Interested in starting exercise',
+        'Imagining future possibilities',
+        'Exploring what might work for you',
+        'Building mental readiness',
+      ],
+      recommendations: [
+        'Identify specific activities that sound enjoyable to you',
+        'Set a concrete start date within the next month',
+        'Address specific barriers preventing you from starting',
+        'Connect with someone who can support your start',
+      ],
+    },
+    {
+      category: 'preparation',
+      range: [4.01, 5.5],
+      label: 'Launch Ready',
+      description: 'You are on the runway, ready for takeoff. The preparations are in place—all that remains is that first committed step into your new active lifestyle.',
+      traits: [
+        'Committed to starting soon',
+        'Preparations underway',
+        'Experimenting with activities',
+        'Momentum building',
+      ],
+      recommendations: [
+        'Set a specific exercise schedule and put it in your calendar',
+        'Prepare your environment: get gear, find locations, etc.',
+        'Start with achievable goals to build early success',
+        'Plan how you will overcome anticipated obstacles',
+      ],
+    },
+    {
+      category: 'action_maintenance',
+      range: [5.51, 7],
+      label: 'Thriving in Motion',
+      description: 'You are living the active lifestyle. Exercise is part of who you are now—a non-negotiable that fuels your days and energizes your life.',
+      traits: [
+        'Living an active lifestyle',
+        'Exercise is identity, not obligation',
+        'Strong established habits',
+        'Naturally maintains routines',
+      ],
+      recommendations: [
+        'Focus on consistency rather than perfection',
+        'Plan for life changes that might disrupt your routine',
+        'Vary activities to prevent boredom and burnout',
+        'Celebrate your commitment to regular physical activity',
+      ],
+    },
+  ],
+};
+
+export const activityReadinessQuestions: Omit<QuestQuestion, 'pk' | 'sk'>[] = [
+  {
+    entity: QuestEntity.QUESTION,
+    taskId: 'activity_readiness',
+    questionId: 'ar_q1',
+    text: 'I currently engage in regular physical activity (3+ times/week).',
+    scale: 'LIKERT_1_7',
+    isReverse: false,
+    domain: 'action_maintenance',
+    order: 1,
+  },
+  {
+    entity: QuestEntity.QUESTION,
+    taskId: 'activity_readiness',
+    questionId: 'ar_q2',
+    text: 'I am planning to start exercising regularly in the next month.',
+    scale: 'LIKERT_1_7',
+    isReverse: false,
+    domain: 'preparation',
+    order: 2,
+  },
+  {
+    entity: QuestEntity.QUESTION,
+    taskId: 'activity_readiness',
+    questionId: 'ar_q3',
+    text: 'I have been thinking about exercising but haven\'t started yet.',
+    scale: 'LIKERT_1_7',
+    isReverse: false,
+    domain: 'contemplation',
+    order: 3,
+  },
+  {
+    entity: QuestEntity.QUESTION,
+    taskId: 'activity_readiness',
+    questionId: 'ar_q4',
+    text: 'I am not considering starting a regular exercise routine.',
+    scale: 'LIKERT_1_7',
+    isReverse: true,
+    domain: 'precontemplation',
+    order: 4,
+  },
+];
