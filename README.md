@@ -7,10 +7,15 @@ This repository contains both halves of the system: the AWS backend and the Reac
 ```
 menthera/
 ├── backend/    ← AWS CDK + TypeScript Lambdas + Python voice agent on ECS
-└── mobile/     ← React Native + Expo 54, iOS and Android
+├── mobile/     ← React Native + Expo 54, iOS and Android
+└── docs/       ← In-depth architecture and feature documentation
 ```
 
-Each half has its own detailed README. This top-level document is the system story — how the pieces fit together, why the architecture is what it is, and what a reviewer should understand in the first five minutes.
+Documentation is tiered for different depths of reading:
+
+- **This file** — the system story, 5-minute read. Read it first for the overview.
+- **[`backend/README.md`](./backend/README.md)** and **[`mobile/README.md`](./mobile/README.md)** — per-half deep dives covering setup, structure, and flows for each codebase.
+- **[`docs/`](./docs/)** — cross-cutting technical documentation. A deep architecture doc plus one document per feature flow (authentication, text chat, voice calls, quests, engagement and achievements, subscriptions and BYOK). Written for reviewers who want to understand how and why the system is built the way it is.
 
 ---
 
@@ -21,6 +26,7 @@ Each half has its own detailed README. This top-level document is the system sto
 - [End-to-end user journey](#end-to-end-user-journey)
 - [Technology choices, summarised](#technology-choices-summarised)
 - [What I think is interesting about this codebase](#what-i-think-is-interesting-about-this-codebase)
+- [Deeper documentation](#deeper-documentation)
 - [Repository layout](#repository-layout)
 - [Running the system locally](#running-the-system-locally)
 - [License](#license)
@@ -204,12 +210,40 @@ A few things I'd point at if someone asked "what's worth looking at":
 
 ---
 
+## Deeper documentation
+
+This README is the system overview. For the full technical story, the [`docs/`](./docs/) directory contains a deep architecture document and one document per feature flow. Every file path referenced in those docs is clickable and points at real source code — the docs are written to be a navigation layer over the codebase, not a standalone reference.
+
+| Document | Covers |
+| --- | --- |
+| [`docs/architecture.md`](./docs/architecture.md) | The 14-stack CDK architecture, cross-stack wiring, the `deploy: false` pattern, the two HTTP surfaces (API Gateway REST + Lambda Function URL streaming behind CloudFront with OAC), the DynamoDB data layer, sync-vs-async webhook processing, deployment order, and honestly documented known architectural gaps |
+| [`docs/features/authentication.md`](./docs/features/authentication.md) | Clerk sign-in, Expo SecureStore token caching, Hono-based JWT verification vs the lightweight `ClerkLambdaAuth` helper, svix webhook signature verification, the idempotency table, and a known signature-verification gap in the call service |
+| [`docs/features/text-chat.md`](./docs/features/text-chat.md) | Streaming chat via Lambda Function URL with `RESPONSE_STREAM` invoke mode, why API Gateway REST cannot do this, the CloudFront + OAC origin protection pattern, the Vercel AI SDK provider abstraction, the Google BYOK constraint, and mem0 long-term memory |
+| [`docs/features/voice-calls.md`](./docs/features/voice-calls.md) | Why voice calls run on ECS Fargate and not Lambda, the Pipecat pipeline (Silero VAD, Smart Turn v3, Cartesia STT/TTS, LLM), the Daily.co SFU pattern, VPC networking with endpoint routing, and the `user-left` teardown protocol that protects against ECS runtime leaks |
+| [`docs/features/quests.md`](./docs/features/quests.md) | Five psychometric quest categories with real academic frameworks, the two-table split between `quest_definitions` (static) and `quest_sessions` (execution), deterministic scoring in code, async LLM report generation via SQS, and the "LLM never calculates raw scores" principle |
+| [`docs/features/engagement-and-achievements.md`](./docs/features/engagement-and-achievements.md) | The `user_activity` event log with TTL, streak computation, 20+ static achievement definitions, on-demand unlock checking, and why static code beats dynamic data for design-time content |
+| [`docs/features/subscriptions-and-byok.md`](./docs/features/subscriptions-and-byok.md) | The two-tier `inactive`/`byok` subscription model, the RevenueCat native paywall, async webhook processing through SQS, the BYOK Google API key validation and storage flow, the immutable subscription audit log, and a known plaintext-storage gap |
+
+Start with [`docs/README.md`](./docs/README.md) for the index, or jump directly into [`docs/architecture.md`](./docs/architecture.md) for the system-wide technical deep dive.
+
+---
+
 ## Repository layout
 
 ```
 menthera/
 ├── README.md                        ← this file (full-system story)
 ├── LICENSE
+├── docs/                            ← In-depth architecture and feature docs
+│   ├── README.md                    ← Docs index
+│   ├── architecture.md              ← System-wide technical deep dive
+│   └── features/                    ← One doc per feature flow
+│       ├── authentication.md
+│       ├── text-chat.md
+│       ├── voice-calls.md
+│       ├── quests.md
+│       ├── engagement-and-achievements.md
+│       └── subscriptions-and-byok.md
 ├── backend/                         ← AWS CDK + Node.js Lambdas + Python voice agent
 │   ├── README.md                    ← deep dive on the backend
 │   ├── bin/menthera-app.ts          ← CDK app entry, wires 14 stacks
